@@ -3,22 +3,30 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class HelloApiServer {
     private static final AppLogger logger = new AppLogger();
+
+    private static final long START_TIME = System.currentTimeMillis();
 
     public static void start() throws IOException {
         logger.log("HelloApiServer:start - starting the server implementations");
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/greet", new GreetHandler());
         server.createContext("/languages", new LanguageListHandler());
-        logger.log("HelloApiServer:start - Successfully created context for /greet and /languages endpoints.");
+        server.createContext("/health", new HealthHandler());
+        logger.log("HelloApiServer:start - Successfully created context for /greet, ?languages and /health endpoints.");
         server.setExecutor(null);
         server.start();
         logger.log("HelloApiServer:start - server is started in the port 8080 of localhost.");
@@ -105,4 +113,71 @@ public class HelloApiServer {
 
     }
 
+    static class HealthHandler implements HttpHandler {
+        private static final String VERSION;
+        private static final String BUILD_DATE;
+
+        static {
+            Properties props = new Properties();
+            try (FileInputStream fis = new FileInputStream("src/build.properties")) {
+                props.load(fis);
+            } catch (IOException e) {
+                System.err.println("Could not read build.properties: " + e.getMessage());
+            }
+            VERSION = props.getProperty("version", "unknown");
+            BUILD_DATE = props.getProperty("build", "unknown");
+        }
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            File pluginsDirectory = new File("src/plugins");
+            int pluginsCount = 0;
+            if (pluginsDirectory.exists() && pluginsDirectory.isDirectory()) {
+                File[] files = pluginsDirectory.listFiles((dir, name) -> name.endsWith(".class"));
+                pluginsCount = files != null ? files.length : 0;
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss");
+            String timestamp = LocalDateTime.now().format(formatter);
+            List<String> memoryStats = getMemoryStats();
+
+            String json = "{\n" +
+                    "  \"status\": \"UP\",\n" +
+                    "  \"plugins\": " + pluginsCount + ",\n" +
+                    "  \"timestamp\": \"" + timestamp + "\",\n" +
+                    "  \"uptime\": \"" + upTime() + "\",\n" +
+                    "  \"memory\": {\n" +
+                    "    \"used\": \"" + memoryStats.get(0) + "\",\n" +
+                    "    \"free\": \"" + memoryStats.get(1) + "\",\n" +
+                    "    \"total\": \"" + memoryStats.get(2) + "\"\n" +
+                    "  },\n" +
+                    "  \"version\": \"" + VERSION + "\",\n" +
+                    "  \"build\": \"" + BUILD_DATE + "\"\n" +
+                    "}";
+            exchange.getResponseHeaders().set("Content-Type", "Application/json");
+            exchange.sendResponseHeaders(200, json.getBytes().length);
+            OutputStream os = exchange.getResponseBody();
+            os.write(json.getBytes());
+            os.close();
+        }
+
+    }
+
+    private static String upTime() {
+        long uptimeMillis = System.currentTimeMillis() - START_TIME;
+        long seconds = (uptimeMillis / 1000) % 60;
+        long minutes = (uptimeMillis / (1000 * 60)) % 60;
+        long hours = uptimeMillis / (1000 * 60 * 60);
+        return String.format("%dh %dm %ds", hours, minutes, seconds);
+    }
+
+    private static List<String> getMemoryStats() {
+        Runtime runtime = Runtime.getRuntime();
+        long total = runtime.totalMemory();
+        long free = runtime.freeMemory();
+        long used = total - free;
+        String usedMb = used / (1024 * 1024) + " MB";
+        String freeMb = free / (1024 * 1024) + " MB";
+        String totalMb = total / (1024 * 1024) + " MB";
+        return List.of(usedMb, freeMb, totalMb);
+    }
 }

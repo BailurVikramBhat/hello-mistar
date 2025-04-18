@@ -17,3 +17,18 @@ Spanish
 German
 Hindi
 Spanish
+18-04-2025 - 21:31:33 - HelloApiServer:start - starting the server implementations
+18-04-2025 - 21:31:33 - HelloApiServer:start - Successfully created context for /greet, ?languages and /health endpoints.
+18-04-2025 - 21:31:33 - HelloApiServer:start - server is started in the port 8080 of localhost.
+18-04-2025 - 21:42:01 - HelloApiServer:start - starting the server implementations
+18-04-2025 - 21:42:01 - HelloApiServer:start - Successfully created context for /greet, ?languages and /health endpoints.
+18-04-2025 - 21:42:01 - HelloApiServer:start - server is started in the port 8080 of localhost.
+18-04-2025 - 21:49:42 - HelloApiServer:start - starting the server implementations
+18-04-2025 - 21:49:42 - HelloApiServer:start - Successfully created context for /greet, ?languages and /health endpoints.
+18-04-2025 - 21:49:42 - HelloApiServer:start - server is started in the port 8080 of localhost.
+18-04-2025 - 21:50:37 - HelloApiServer:start - starting the server implementations
+18-04-2025 - 21:50:37 - HelloApiServer:start - Successfully created context for /greet, ?languages and /health endpoints.
+18-04-2025 - 21:50:37 - HelloApiServer:start - server is started in the port 8080 of localhost.
+18-04-2025 - 21:52:18 - HelloApiServer:start - starting the server implementations
+18-04-2025 - 21:52:18 - HelloApiServer:start - Successfully created context for /greet, ?languages and /health endpoints.
+18-04-2025 - 21:52:18 - HelloApiServer:start - server is started in the port 8080 of localhost.
