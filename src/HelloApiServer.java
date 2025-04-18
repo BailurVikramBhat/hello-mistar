@@ -31,6 +31,8 @@ public class HelloApiServer {
         server.createContext("/health", new HealthHandler());
         server.createContext("/history", new HistoryHandler());
         server.createContext("/metrics", new MetricsHandler());
+        server.createContext("/docs", new SwaggerHandler());
+
         logger.log(
                 "HelloApiServer:start - Successfully created context for /greet, ?languages, /health, /history and /metrics endpoints.");
         server.setExecutor(null);
@@ -240,6 +242,25 @@ public class HelloApiServer {
 
         }
 
+    }
+
+    static class SwaggerHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            File file = new File("swagger.json");
+            if (!file.exists()) {
+                String msg = "{ \"error\": \"swagger.json not found\" }";
+                exchange.sendResponseHeaders(404, msg.length());
+                exchange.getResponseBody().write(msg.getBytes());
+                exchange.getResponseBody().close();
+                return;
+            }
+            byte[] bytes = Files.readAllBytes(file.toPath());
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, bytes.length);
+            exchange.getResponseBody().write(bytes);
+            exchange.getResponseBody().close();
+        }
     }
 
     private static String upTime() {

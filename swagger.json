@@ -1,0 +1,90 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Hello World Plugin API",
+    "version": "1.0.0",
+    "description": "A modular Hello World REST API with dynamic plugin support."
+  },
+  "paths": {
+    "/greet": {
+      "get": {
+        "summary": "Greet the user",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "Plugin class name",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name to greet",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Greeting response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "language": "HindiHello",
+                  "name": "Vikram",
+                  "greeting": "नमस्ते Vikram"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/languages": {
+      "get": {
+        "summary": "List available plugins",
+        "responses": {
+          "200": {
+            "description": "List of language plugin classes",
+            "content": {
+              "text/plain": {
+                "example": "EnglishHello\nHindiHello\nSpanishHello"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/history": {
+      "get": {
+        "summary": "Get greeting history",
+        "responses": {
+          "200": {
+            "description": "JSON array of greeting records"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "summary": "Greeting usage stats",
+        "responses": {
+          "200": {
+            "description": "Plugin usage count"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Check API health",
+        "responses": {
+          "200": {
+            "description": "Health status and runtime info"
+          }
+        }
+      }
+    }
+  }
+}

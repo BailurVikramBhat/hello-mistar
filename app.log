@@ -231,3 +231,6 @@ Spanish
   "timestamp": "18-04-2025 - 22:46:00"
 }
 ]
+18-04-2025 - 22:56:36 - HelloApiServer:start - starting the server implementations
+18-04-2025 - 22:56:36 - HelloApiServer:start - Successfully created context for /greet, ?languages, /health, /history and /metrics endpoints.
+18-04-2025 - 22:56:36 - HelloApiServer:start - server is started in the port 8080 of localhost.
