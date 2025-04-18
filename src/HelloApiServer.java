@@ -4,9 +4,11 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -26,6 +28,7 @@ public class HelloApiServer {
         server.createContext("/greet", new GreetHandler());
         server.createContext("/languages", new LanguageListHandler());
         server.createContext("/health", new HealthHandler());
+        server.createContext("/history", new HistoryHandler());
         logger.log("HelloApiServer:start - Successfully created context for /greet, ?languages and /health endpoints.");
         server.setExecutor(null);
         server.start();
@@ -58,6 +61,13 @@ public class HelloApiServer {
             logger.log("GreetHandler:handle - LangClass & strategy successfully loaded. ");
             String greetingText = (strategy != null) ? strategy.sayHello(name)
                     : "Could not load Language class: " + langClass;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss");
+            String timestamp = LocalDateTime.now().format(formatter);
+            try (FileWriter writer = new FileWriter("history.log", true)) {
+                writer.write(langClass + "|" + name + "|" + greetingText + "|" + timestamp + "\n");
+            } catch (IOException e) {
+                System.err.println("Failed to write greeting to history: " + e.getMessage());
+            }
             String json = "{\n" +
                     "  \"language\": \"" + langClass + "\",\n" +
                     "  \"name\": \"" + name + "\",\n" +
@@ -153,11 +163,45 @@ public class HelloApiServer {
                     "  \"version\": \"" + VERSION + "\",\n" +
                     "  \"build\": \"" + BUILD_DATE + "\"\n" +
                     "}";
-            exchange.getResponseHeaders().set("Content-Type", "Application/json");
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, json.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(json.getBytes());
             os.close();
+        }
+
+    }
+
+    static class HistoryHandler implements HttpHandler {
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            File file = new File("history.log");
+            logger.log("HistoryHandler:handle - method started.");
+            if (!file.exists()) {
+                logger.log("HistoryHandler:handle - file doesn't exist.");
+                System.err.println("src/history.log doesn't exist");
+                String empty = "[]";
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, empty.length());
+                exchange.getResponseBody().write(empty.getBytes());
+                exchange.getResponseBody().close();
+                return;
+            }
+            logger.log("HistoryHandler:handle - File found.");
+
+            List<String> lines = Files.readAllLines(file.toPath());
+            logger.log("HistoryHandler:handle - # lines = " + lines.size());
+            List<String> jsonRecords = lines.stream().map(GreetingRecord::fromLogLine).map(GreetingRecord::toJson)
+                    .collect(Collectors.toList());
+            logger.log("HistoryHandler:handle - " + jsonRecords);
+
+            String json = "[\n" + String.join(",\n", jsonRecords) + "\n]";
+            logger.log("HistoryHandler:handle json values - " + json);
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, json.getBytes().length);
+            exchange.getResponseBody().write(json.getBytes());
+            exchange.getResponseBody().close();
         }
 
     }
