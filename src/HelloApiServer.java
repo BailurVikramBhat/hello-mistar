@@ -25,33 +25,42 @@ public class HelloApiServer {
         System.out.println("API server started at http://localhost:8080");
     }
 
-    static class GreetHandler implements  HttpHandler {
+    static class GreetHandler implements HttpHandler {
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             logger.log("GreetHandler:handle - Executing Handle for GreetHandler");
-            if(!"GET".equals(exchange.getRequestMethod())) {
+            if (!"GET".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(405, -1);
                 return;
             }
             Map<String, String> params = parseQuery(exchange.getRequestURI().getQuery());
-            logger.log("GreetHandler:handle - parsed params: "+params);
+            logger.log("GreetHandler:handle - parsed params: " + params);
             String name = params.getOrDefault("name", "world");
             String langClass = params.getOrDefault("lang", "EnglishHello");
             HelloStrategy strategy = LanguageLoader.loadLanguage(langClass);
             logger.log("GreetHandler:handle - LangClass & strategy successfully loaded. ");
-            String response = (strategy!=null)?strategy.sayHello(name):"Could not load language: "+langClass;
-            exchange.sendResponseHeaders(200, response.getBytes().length);
+            String greetingText = (strategy != null) ? strategy.sayHello(name)
+                    : "Could not load Language class: " + langClass;
+            String json = "{\n" +
+                    "  \"language\": \"" + langClass + "\",\n" +
+                    "  \"name\": \"" + name + "\",\n" +
+                    "  \"greeting\": \"" + greetingText + "\"\n" +
+                    "}";
+            exchange.getResponseHeaders().set("Content-Type", "application.json");
+            exchange.sendResponseHeaders(200, json.getBytes().length);
             OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
+            os.write(json.getBytes());
             os.close();
         }
 
         private Map<String, String> parseQuery(String query) {
-            if(query == null) return Map.of();
-            return Arrays.stream(query.split("&")).map(s -> s.split("=", 2)).collect(Collectors.toMap(arr -> arr[0], arr->arr.length>1?arr[1]:""));
+            if (query == null)
+                return Map.of();
+            return Arrays.stream(query.split("&")).map(s -> s.split("=", 2))
+                    .collect(Collectors.toMap(arr -> arr[0], arr -> arr.length > 1 ? arr[1] : ""));
         }
-        
+
     }
 
     static class LanguageListHandler implements HttpHandler {
@@ -59,7 +68,6 @@ public class HelloApiServer {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
 
-            
             File pluginsDirectory = new File("src/plugins");
             if (!pluginsDirectory.exists()) {
                 String msg = "plugins directory does not exist.";
@@ -70,9 +78,9 @@ public class HelloApiServer {
                 return;
             }
             logger.log("LanguageListHandler:handle - Successfully loaded plugins directory");
-            File[] classFiles = pluginsDirectory.listFiles((dir, name)-> name.endsWith(".class"));
+            File[] classFiles = pluginsDirectory.listFiles((dir, name) -> name.endsWith(".class"));
             logger.log("LanguageListhandler:handle - Successfully loaded plugin files. ");
-            if(classFiles == null || classFiles.length == 0) {
+            if (classFiles == null || classFiles.length == 0) {
                 logger.log("LanguageListhandler:handle - No plugins found, throwing error.");
                 String msg = "no plugins found.";
                 exchange.sendResponseHeaders(200, msg.length());
@@ -80,8 +88,9 @@ public class HelloApiServer {
                 exchange.close();
                 return;
             }
-            String list = Arrays.stream(classFiles).map(file -> file.getName().replace("Hello.class", "")).collect(Collectors.joining("\n"));
-            logger.log("LanguageListhandler:handle - list of the languages: "+list);
+            String list = Arrays.stream(classFiles).map(file -> file.getName().replace("Hello.class", ""))
+                    .collect(Collectors.joining("\n"));
+            logger.log("LanguageListhandler:handle - list of the languages: " + list);
             exchange.sendResponseHeaders(200, list.getBytes().length);
             exchange.getResponseBody().write(list.getBytes());
             exchange.close();

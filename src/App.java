@@ -8,14 +8,16 @@ public class App {
         // System.out.println(service.greet("Vikram"));
         // service.setStrategy(new HindiHello());
         // System.out.println(service.greet("Vikram"));
+        // service.setStrategy(new GermanHello());
+        // System.out.println(service.greet("Vikram"));
 
         // Dynamic language loading from precompiled plugins folder
         // HelloStrategy dynamicHello = LanguageLoader.loadLanguage("SpanishHello");
         // if(dynamicHello !=null ) {
-        //     HelloWorldService service = new HelloWorldService(dynamicHello);
-        //     System.out.println(service.greet("Vikram!"));
+        // HelloWorldService service = new HelloWorldService(dynamicHello);
+        // System.out.println(service.greet("Vikram!"));
         // } else {
-        //     System.err.println("Failed to load language... :(");
+        // System.err.println("Failed to load language... :(");
         // }
 
         // Using server
