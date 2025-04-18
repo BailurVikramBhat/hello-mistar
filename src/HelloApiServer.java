@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,7 +30,9 @@ public class HelloApiServer {
         server.createContext("/languages", new LanguageListHandler());
         server.createContext("/health", new HealthHandler());
         server.createContext("/history", new HistoryHandler());
-        logger.log("HelloApiServer:start - Successfully created context for /greet, ?languages and /health endpoints.");
+        server.createContext("/metrics", new MetricsHandler());
+        logger.log(
+                "HelloApiServer:start - Successfully created context for /greet, ?languages, /health, /history and /metrics endpoints.");
         server.setExecutor(null);
         server.start();
         logger.log("HelloApiServer:start - server is started in the port 8080 of localhost.");
@@ -202,6 +205,39 @@ public class HelloApiServer {
             exchange.sendResponseHeaders(200, json.getBytes().length);
             exchange.getResponseBody().write(json.getBytes());
             exchange.getResponseBody().close();
+        }
+
+    }
+
+    static class MetricsHandler implements HttpHandler {
+
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            File file = new File("history.log");
+            Map<String, Long> languageCounts = Files.exists(file.toPath())
+                    ? Files.lines(file.toPath())
+                            .map(line -> line.split("\\|")[0])
+                            .collect(Collectors.groupingBy(lang -> lang, Collectors.counting()))
+                    : Map.of();
+
+            StringBuilder json = new StringBuilder("{\n");
+            int i = 0;
+            int size = languageCounts.size();
+            for (Map.Entry<String, Long> entry : languageCounts.entrySet()) {
+                json.append("  \"").append(entry.getKey()).append("\": ").append(entry.getValue());
+                if (++i < size)
+                    json.append(",\n");
+                else
+                    json.append("\n");
+            }
+            json.append("}");
+
+            byte[] bytes = json.toString().getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, bytes.length);
+            exchange.getResponseBody().write(bytes);
+            exchange.getResponseBody().close();
+
         }
 
     }
