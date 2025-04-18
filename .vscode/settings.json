@@ -1,7 +1,10 @@
 {
-    "java.project.sourcePaths": ["src"],
-    "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar"
-    ]
+  "java.project.sourcePaths": [
+    "hello-core/src/main/java",
+    "hello-api/src/main/java",
+    "hello-launcher/src/main/java",
+    "hello-plugins/src/main/java"
+  ],
+  "java.project.outputPath": "bin",
+  "java.project.referencedLibraries": []
 }

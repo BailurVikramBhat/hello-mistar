@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <mkdir dir="D:\dev\java\hello-mistar\hello-plugins/../plugins/com/vikrambhat/plugins"/>
+  <copy todir="D:\dev\java\hello-mistar\hello-plugins/../plugins/com/vikrambhat/plugins" overwrite="true">
+    <fileset dir="D:\dev\java\hello-mistar\hello-plugins\target\classes/com/vikrambhat/plugins"/>
+  </copy>
+</target>
+</project>

@@ -207,28 +207,6 @@ Example `/greet` schema in Swagger:
 
 ---
 
-### 💡 Optional: Add Swagger UI in `/docs.html`
-
-To make it even cooler:
-
-- Download Swagger UI static files
-- Serve them at `/docs.html`
-- Have it fetch your `/docs` spec automatically
-
-This makes your API visually interactive on the browser — just like a professional REST platform.
-
----
-
-## 🧪 Pro Tip
-
-Swagger docs also help you:
-
-- Communicate API usage clearly
-- Generate client SDKs for free
-- Make your repo look like it belongs in production
-
----
-
 ## 📌 Notes
 
 - No external libraries used

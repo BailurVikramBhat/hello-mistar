@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "hello.plugins/com.vikrambhat.launcher.Main",
+      "projectName": "hello-mistar_de4d91c3"
+    },
+    {
+      "type": "java",
+      "name": "Launch Hello World Modular App",
+      "request": "launch",
+      "modulePaths": [
+        "hello-core/target/classes",
+        "hello-api/target/classes",
+        "hello-plugins/target/classes",
+        "hello-launcher/target/classes"
+      ],
+      "moduleName": "hello.launcher",
+      "mainClass": "com.vikrambhat.launcher.Main"
+    }
+  ]
+}
