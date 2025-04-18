@@ -39,6 +39,14 @@ public class HelloApiServer {
             String name = params.getOrDefault("name", "world");
             String langClass = params.getOrDefault("lang", "EnglishHello");
             HelloStrategy strategy = LanguageLoader.loadLanguage(langClass);
+            OutputStream os = exchange.getResponseBody();
+            if (strategy == null) {
+                String errorJson = "{ \"error\": \"Could not load language: " + langClass + "\" }";
+                exchange.sendResponseHeaders(400, errorJson.getBytes().length);
+                os.write(errorJson.getBytes());
+                os.close();
+                return;
+            }
             logger.log("GreetHandler:handle - LangClass & strategy successfully loaded. ");
             String greetingText = (strategy != null) ? strategy.sayHello(name)
                     : "Could not load Language class: " + langClass;
@@ -49,7 +57,6 @@ public class HelloApiServer {
                     "}";
             exchange.getResponseHeaders().set("Content-Type", "application.json");
             exchange.sendResponseHeaders(200, json.getBytes().length);
-            OutputStream os = exchange.getResponseBody();
             os.write(json.getBytes());
             os.close();
         }

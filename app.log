@@ -1,55 +1,19 @@
-2025-04-18T19:59:26.488498600 - HelloApiServer:start - starting the server implementations
-2025-04-18T19:59:26.769865900 - HelloApiServer:start - Successfully created context for /greet and /languages endpoints.
-2025-04-18T19:59:26.770861300 - HelloApiServer:start - server is started in the port 8080 of localhost.
-2025-04-18T19:59:32.109551200 - LanguageListHandler:handle - Successfully loaded plugins directory
-2025-04-18T19:59:32.111546600 - LanguageListhandler:handle - Successfully loaded plugin files. 
-2025-04-18T19:59:32.117528900 - LanguageListhandler:handle - list of the languages: English
-Hindi
-Spanish
-2025-04-18T21:14:05.486739800 - HelloApiServer:start - starting the server implementations
-2025-04-18T21:14:05.889879100 - HelloApiServer:start - Successfully created context for /greet and /languages endpoints.
-2025-04-18T21:14:05.890878600 - HelloApiServer:start - server is started in the port 8080 of localhost.
-2025-04-18T21:14:15.010920900 - LanguageListHandler:handle - Successfully loaded plugins directory
-2025-04-18T21:14:15.016902400 - LanguageListhandler:handle - Successfully loaded plugin files. 
-2025-04-18T21:14:15.022888800 - LanguageListhandler:handle - list of the languages: English
-German
-Hindi
-SpanishHello copy.class
-Spanish
-2025-04-18T21:14:58.434813600 - HelloApiServer:start - starting the server implementations
-2025-04-18T21:14:58.659212800 - HelloApiServer:start - Successfully created context for /greet and /languages endpoints.
-2025-04-18T21:14:58.660211400 - HelloApiServer:start - server is started in the port 8080 of localhost.
-2025-04-18T21:15:02.157580800 - LanguageListHandler:handle - Successfully loaded plugins directory
-2025-04-18T21:15:02.160573500 - LanguageListhandler:handle - Successfully loaded plugin files. 
-2025-04-18T21:15:02.166556400 - LanguageListhandler:handle - list of the languages: English
+18-04-2025 - 21:22:00 - GreetHandler:handle - Executing Handle for GreetHandler
+18-04-2025 - 21:22:00 - GreetHandler:handle - parsed params: {name=Vikram, lang=SpanishHello}
+18-04-2025 - 21:22:00 - LanguageLoader:try - Successfully loaded plugins directory
+18-04-2025 - 21:22:00 - LanguageLoader:try - Successfully loaded URLs
+18-04-2025 - 21:22:00 - URLs: [file:/D:/dev/java/hello-mistar/plugins]
+18-04-2025 - 21:22:00 - LanguageLoader:try:try -SpanishHello is assignable from HelloStrategy!
+18-04-2025 - 21:22:00 - GreetHandler:handle - LangClass & strategy successfully loaded. 
+18-04-2025 - 21:22:02 - LanguageListHandler:handle - Successfully loaded plugins directory
+18-04-2025 - 21:22:02 - LanguageListhandler:handle - Successfully loaded plugin files. 
+18-04-2025 - 21:22:02 - LanguageListhandler:handle - list of the languages: English
 German
 Hindi
 Spanish
-2025-04-18T21:15:25.231315200 - GreetHandler:handle - Executing Handle for GreetHandler
-2025-04-18T21:15:25.236301800 - GreetHandler:handle - parsed params: {name=Vikram, lang=HindiHello}
-2025-04-18T21:15:25.239293300 - LanguageLoader:try - Successfully loaded plugins directory
-2025-04-18T21:15:25.241288200 - LanguageLoader:try - Successfully loaded URLs
-2025-04-18T21:15:25.245278200 - URLs: [file:/D:/dev/java/hello-mistar/plugins]
-2025-04-18T21:15:25.247272 - LanguageLoader:try:try -HindiHello is assignable from HelloStrategy!
-2025-04-18T21:15:25.248269600 - GreetHandler:handle - LangClass & strategy successfully loaded. 
-2025-04-18T21:15:34.007139900 - GreetHandler:handle - Executing Handle for GreetHandler
-2025-04-18T21:15:34.008136700 - GreetHandler:handle - parsed params: {name=Vikram, lang=GermanHello}
-2025-04-18T21:15:34.008136700 - LanguageLoader:try - Successfully loaded plugins directory
-2025-04-18T21:15:34.009133400 - LanguageLoader:try - Successfully loaded URLs
-2025-04-18T21:15:34.009133400 - URLs: [file:/D:/dev/java/hello-mistar/plugins]
-2025-04-18T21:15:34.011129700 - LanguageLoader:try:try -GermanHello is assignable from HelloStrategy!
-2025-04-18T21:15:34.012127300 - GreetHandler:handle - LangClass & strategy successfully loaded. 
-2025-04-18T21:15:40.730576 - GreetHandler:handle - Executing Handle for GreetHandler
-2025-04-18T21:15:40.731573900 - GreetHandler:handle - parsed params: {name=Vikram, lang=EnglishHello}
-2025-04-18T21:15:40.731573900 - LanguageLoader:try - Successfully loaded plugins directory
-2025-04-18T21:15:40.732575500 - LanguageLoader:try - Successfully loaded URLs
-2025-04-18T21:15:40.732575500 - URLs: [file:/D:/dev/java/hello-mistar/plugins]
-2025-04-18T21:15:40.733572800 - LanguageLoader:try:try -EnglishHello is assignable from HelloStrategy!
-2025-04-18T21:15:40.734566 - GreetHandler:handle - LangClass & strategy successfully loaded. 
-2025-04-18T21:15:46.718232100 - GreetHandler:handle - Executing Handle for GreetHandler
-2025-04-18T21:15:46.718232100 - GreetHandler:handle - parsed params: {name=Vikram, lang=SpanishHello}
-2025-04-18T21:15:46.719228900 - LanguageLoader:try - Successfully loaded plugins directory
-2025-04-18T21:15:46.720227100 - LanguageLoader:try - Successfully loaded URLs
-2025-04-18T21:15:46.720227100 - URLs: [file:/D:/dev/java/hello-mistar/plugins]
-2025-04-18T21:15:46.721224300 - LanguageLoader:try:try -SpanishHello is assignable from HelloStrategy!
-2025-04-18T21:15:46.722221500 - GreetHandler:handle - LangClass & strategy successfully loaded. 
+18-04-2025 - 21:22:04 - LanguageListHandler:handle - Successfully loaded plugins directory
+18-04-2025 - 21:22:04 - LanguageListhandler:handle - Successfully loaded plugin files. 
+18-04-2025 - 21:22:04 - LanguageListhandler:handle - list of the languages: English
+German
+Hindi
+Spanish
