@@ -1,0 +1,8 @@
+2025-04-18T19:59:26.488498600 - HelloApiServer:start - starting the server implementations
+2025-04-18T19:59:26.769865900 - HelloApiServer:start - Successfully created context for /greet and /languages endpoints.
+2025-04-18T19:59:26.770861300 - HelloApiServer:start - server is started in the port 8080 of localhost.
+2025-04-18T19:59:32.109551200 - LanguageListHandler:handle - Successfully loaded plugins directory
+2025-04-18T19:59:32.111546600 - LanguageListhandler:handle - Successfully loaded plugin files. 
+2025-04-18T19:59:32.117528900 - LanguageListhandler:handle - list of the languages: English
+Hindi
+Spanish
